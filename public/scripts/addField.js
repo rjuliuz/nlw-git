@@ -1,19 +1,26 @@
-//Procurar o botão
+// Procurar o botão 
 document.querySelector("#add-time")
-//Quando clicar no botão
-.addEventListener("click", cloneField)
-// Executar uma ação
+// Quando clicar, executar ação
+.addEventListener('click', cloneField)
 function cloneField() {
-//Duplicar os campos. Que campos?
-const nemFieldContainer = document.querySelector(".schedule-item").cloneNode(true)
-//Pegar os campos. Que campos?
-const fields = nemFieldContainer.querySelectorAll("input")
-//Para cada campo, limpar
-fields.forEach(function(field) {
-//Pega o field do momento e limpa ele
-field.value = ""
-})
-//Colocar na página. Onde?
-document.querySelector("#schedule-items").appendChild(nemFieldContainer)
-}
+
+    // Duplica os campos, quais?
+
+    const newFieldContainer = document.querySelector('.schedule-item').cloneNode(true)
     
+    // pegar campos, como/quais?
+    
+    const fields = newFieldContainer.querySelectorAll('input')
+
+    // para cada um, limpar
+
+    fields.forEach(function(field) {
+        // pegar field, e limpa
+        field.value = ""
+    })
+
+    // colocar na pagina, onde?
+
+    document.querySelector('#schedule-items').appendChild(newFieldContainer)
+}
+

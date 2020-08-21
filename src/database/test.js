@@ -1,67 +1,64 @@
-const Database = require('./db.js')
+const Database = require('./db') 
 const createProffy = require('./createProffy')
 
+
 Database.then(async (db) => {
-    // Inserir dados
+    // insert datas
     proffyValue = {
-        name: 'Luiz Gustavo Muller',
-        avatar:'https://scontent.fria3-1.fna.fbcdn.net/v/t1.0-9/11137114_974947785872472_4138925663123034127_n.jpg?_nc_cat=103&_nc_sid=7aed08&_nc_ohc=wYwJvZdfATgAX9xBo6-&_nc_ht=scontent.fria3-1.fna&oh=3340545fa6fa04996bba6eba44a4ffbc&oe=5F517DA6',
-        whatsapp: '899886622',
-        bio: 'Entusiasta das melhores tecnologias de química avançada.<br><br>Apaixonado por explodir coisas em laboratório e por mudar a vida das pessoas através de experiências. Mais de 200.000 pessoas já passaram por uma das minhas explosões.',
+        name: 'Felipe Sales',
+        avatar: 'https://avatars1.githubusercontent.com/u/59374587?s=460&u=e1241b0012309b5e9bdb3892e3f7a7a202b00c05&v=4',
+        whatsapp: '876543478',
+        bio: 'instrutor de futsal, venha aprender a jogar de goleiro, fixo, ala e pivo'
     }
 
     classValue = {
-        subject: 1, 
-        cost: "200", 
-        // proffy_id virá pelo banco de dados
+        subject: 1,
+        cost: '15',
+        // where proffy_id? will come to database
     }
 
     classScheduleValues = [
-        //class_id virá pelo banco de dados, após cadastrarmos a class
+        // where class_id? will come to database 
         {
-            weekday: 1, 
-            time_from: 720, 
+            weekday: 0,
+            time_from: 720,
             time_to: 1220
         },
         {
-            weekday: 0, 
-            time_from: 540, 
-            time_to: 1220
+            weekday: 0,
+            time_from: 820,
+            time_to: 1820
         }
     ]
-    
-//   await  createProffy(db, {proffyValue, classValue, classScheduleValues})
 
-  
-    //Consultar os dados inseridos:
+    // await createProffy (db, {proffyValue, classValue, classScheduleValues})
 
-    //Todos os proffys
+    // consult insert datas 
+
+    // all proffys
     const selectedProffys = await db.all("SELECT * FROM proffys")
     // console.log(selectedProffys)
 
-    //consultar as classes de um determinado professor
-    //e trazer junto os dados do professor
+    //consult one proffy classses, and bring datas 
     const selectClassesAndProffys = await db.all(`
         SELECT classes.*, proffys.*
-        FROM proffys
+        FROM proffys 
         JOIN classes ON (classes.proffy_id = proffys.id)
         WHERE classes.proffy_id = 1;
     `)
-    // console.log(selectClassesAndProffys)
+    // console.log(selectedProffys)
 
-    // o horario que a pessoa trabalha, por exemplo, é das 8 as 18
-    // o horario do time_from (8) precisa ser antes ou igual ao horário solicitado
-    // o time_to precisa ser acima
-
+    // time the people work, for example, is 8am to 18pm
+    // time time_from - 8am, need to be small or ecqual to time required 
+    // time time_to   - 18pm, need to be above 
     const selectClassesSchedules = await db.all(`
         SELECT class_schedule.*
         FROM class_schedule
         WHERE class_schedule.class_id = "1"
         AND class_schedule.weekday = "0"
-        AND class_schedule.time_from <= "420"
-        AND class_schedule.time_to > "1520"
+        AND class_schedule.time_from <= "720" 
+        AND class_schedule.time_to > "720"
     `)
-    // console.log(selectClassesSchedules)
 
-
+    console.log(selectClassesSchedules)
 })

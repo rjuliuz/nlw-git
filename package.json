@@ -1,22 +1,8 @@
 {
-  "name": "nlw-git",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "next-level-week",
   "scripts": {
     "dev": "nodemon src/server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rjuliuz/nlw-git.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rjuliuz/nlw-git/issues"
-  },
-  "homepage": "https://github.com/rjuliuz/nlw-git#readme",
   "dependencies": {
     "express": "^4.17.1",
     "nunjucks": "^3.2.2",
@@ -24,5 +10,11 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
-  }
+  },
+  "description": "<p align=\"center\">       <img src=\"https://user-images.githubusercontent.com/59374587/89741531-76095b00-da68-11ea-9005-3d931bb245eb.png\" width=\"30%\"/>    </p>",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

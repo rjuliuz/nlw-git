@@ -1,23 +1,22 @@
-module.exports = async function(db, { proffyValue, classValue, classScheduleValues }) {
-    //inserir dados na tableda de proffys
+module.exports = async function(db, {proffyValue, classValue, classScheduleValues}) {
+    // insert datas in proffy table
     const insertedProffy = await db.run(`
-        INSERT INTO proffys (
-            name,
-            avatar,
-            whatsapp,
-            bio
-        ) VALUES (
-            "${proffyValue.name}",
-            "${proffyValue.avatar}",
-            "${proffyValue.whatsapp}",
-            "${proffyValue.bio}"
-        );
+            INSERT INTO proffys (
+                name,
+                avatar,
+                whatsapp,
+                bio
+            ) VALUES (
+                "${proffyValue.name}",
+                "${proffyValue.avatar}",
+                "${proffyValue.whatsapp}",      
+                "${proffyValue.bio}"
+            );
     `)
 
     const proffy_id = insertedProffy.lastID
 
-    // inserir dados na tabela classes
-
+    // insert datas in tables classes
     const insertedClass = await db.run(`
             INSERT INTO classes (
                 subject,
@@ -32,13 +31,13 @@ module.exports = async function(db, { proffyValue, classValue, classScheduleValu
 
     const class_id = insertedClass.lastID
 
-    // Inserir dados na tabela class_schedule
+    // insert datas in class_schedule table
     const insertedAllClassScheduleValues = classScheduleValues.map((classScheduleValue) => {
         return db.run(`
             INSERT INTO class_schedule (
                 class_id,
                 weekday,
-                time_from,
+                time_from, 
                 time_to
             ) VALUES (
                 "${class_id}",
@@ -47,9 +46,8 @@ module.exports = async function(db, { proffyValue, classValue, classScheduleValu
                 "${classScheduleValue.time_to}"
             );
         `)
-    })            
+    })
 
-    //aqui vou executar todos os db.runs() das class_schedules
+    // execute here all db.run() in class_Schedules 
     await Promise.all(insertedAllClassScheduleValues)
-
-}
+} 

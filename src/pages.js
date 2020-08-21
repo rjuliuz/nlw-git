@@ -1,4 +1,4 @@
-const Database = require ('./database/db')
+const Database = require('./database/db')
 
 const { subjects, weekdays, getSubject, convertHoursToMinutes } = require('./utils/format')
 
@@ -8,17 +8,16 @@ function pageLanding(req, res) {
 
 async function pageStudy(req, res) {
     const filters = req.query
-
-    if(!filters.subject || !filters.weekday || !filters.time) {
+    if (!filters.subject || !filters.weekday || !filters.time) {
         return res.render("study.html", { filters, subjects, weekdays })
     }
 
-    //converter horas em minutos
+    // convert hours in minutes
     const timeToMinutes = convertHoursToMinutes(filters.time)
 
     const query = `
         SELECT classes.*, proffys.*
-        FROM proffys
+        FROM proffys 
         JOIN classes ON (classes.proffy_id = proffys.id)
         WHERE EXISTS (
             SELECT class_schedule.*
@@ -27,28 +26,25 @@ async function pageStudy(req, res) {
             AND class_schedule.weekday = ${filters.weekday}
             AND class_schedule.time_from <= ${timeToMinutes}
             AND class_schedule.time_to > ${timeToMinutes}
-        )
+        ) 
         AND classes.subject = '${filters.subject}'
     `
 
-    //caso haja erro na hora da consulta do banco de dados
-            try {
-                const db = await Database
-                const proffys = await db.all(query)
-
-                proffys.map((proffy) => {
-                    proffy.subject = getSubject(proffy.subject)
-                })
-
-                return res.render('study.html', {proffys, subjects, filters, weekdays})
-
-            } catch (error) {
-                console.log(error)
-            } 
+    // case has error in database query  
+    try {
+        const db = await Database 
+        const proffys = await db.all(query) 
+        proffys.map((proffy) => {
+            proffy.subject = getSubject(proffy.subject)
+        })
+        return res.render('study.html', { proffys, subjects, filters, weekdays })
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 function pageGiveClasses(req, res) {
-    return res.render("give-classes.html", { subjects, weekdays })
+    return res.render("give-classes.html", {subjects, weekdays})
 }
 
 async function saveClasses(req, res) {
@@ -69,25 +65,25 @@ async function saveClasses(req, res) {
     const classScheduleValues = req.body.weekday.map((weekday, index) => {
         return {
             weekday,
-            time_from: convertHoursToMinutes(req.body.time_from[index]), 
+            time_from: convertHoursToMinutes(req.body.time_from[index]),
             time_to: convertHoursToMinutes(req.body.time_to[index])
         }
-    })
-    
+    }) 
+
     try {
         const db = await Database
         await createProffy(db, { proffyValue, classValue, classScheduleValues })
-
+    
         let queryString = "?subject=" + req.body.subject
         queryString += "&weekday=" + req.body.weekday[0]
         queryString += "&time=" + req.body.time_from[0]
 
         return res.redirect("/study" + queryString)
-
     } catch (error) {
-        console.log(error)   
+        console.log(error)
     }
-}
+
+    }
 
 module.exports = {
     pageLanding,
